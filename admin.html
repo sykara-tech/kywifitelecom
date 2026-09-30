@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Ky WIFI Telecom</title>
+
+    <!-- Fontes e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- CSS Unificado -->
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- SDKs do Firebase (Compat SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+    <!-- CABEÇALHO -->
+    <header>
+        <a href="#" class="brand-logo">
+            <img src="https://i.ibb.co/Xrz7n7dX/image-9658f0-removebg-preview.png" alt="Ky WIFI Logo" class="ky-logo">
+        </a>
+        <div class="header-user">
+            <div class="user-chip" id="userChip">
+                <i class="fas fa-user-circle"></i>
+                <span id="userNomeDisplay">Carregando...</span>
+                <span class="user-role" id="userRoleDisplay"></span>
+            </div>
+            <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="admin-wrapper">
+        
+        <!-- BANNER -->
+        <section class="welcome-card">
+            <div>
+                <h2 id="welcomeTitle">Painel de Gestão</h2>
+                <p id="welcomeSub">Gerencie contratos, boletos e status dos clientes de forma rápida.</p>
+            </div>
+            <button class="btn-action btn-orange" onclick="abrirModalContrato()">
+                <i class="fas fa-plus-circle"></i> Novo Contrato
+            </button>
+        </section>
+
+        <!-- CARTÕES ESTATÍSTICOS -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <h4>Total de Clientes</h4>
+                    <span id="statClientes">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-file-contract"></i></div>
+                <div class="stat-info">
+                    <h4>Contratos Ativos</h4>
+                    <span id="statContratos">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-barcode"></i></div>
+                <div class="stat-info">
+                    <h4>Boletos Gerados</h4>
+                    <span id="statBoletos">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
+                <div class="stat-info">
+                    <h4>Administradores</h4>
+                    <span id="statAdmins">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVEGAÇÃO -->
+        <nav class="admin-nav">
+            <button class="nav-tab active" onclick="openTab(event, 'tabContratos')">
+                <i class="fas fa-file-contract"></i> Gestão de Contratos
+            </button>
+            <button class="nav-tab" onclick="openTab(event, 'tabBoletos')">
+                <i class="fas fa-barcode"></i> Emissão de Boletos
+            </button>
+            <button class="nav-tab" id="tabBtnAdmin" onclick="openTab(event, 'tabAdmin')">
+                <i class="fas fa-user-shield"></i> Usuários do Sistema
+            </button>
+        </nav>
+
+        <!-- ABA 1: CONTRATOS -->
+        <section id="tabContratos" class="tab-content active">
+            <div class="tab-header">
+                <h2 class="tab-title"><i class="fas fa-file-signature"></i> Gestão de Clientes e Contratos</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-action btn-excel" onclick="exportarPlanilha()"><i class="fas fa-file-excel"></i> Exportar Excel</button>
+                    <button class="btn-action" onclick="abrirModalContrato()"><i class="fas fa-plus-circle"></i> Adicionar Cliente</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>CPF</th>
+                            <th>Plano</th>
+                            <th>Valor</th>
+                            <th>Vencimento</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaContratos">
+                        <tr><td colspan="7" style="text-align: center;">Carregando contratos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ABA 2: BOLETOS -->
+        <section id="tabBoletos" class="tab-content">
+            <div class="tab-header">
+                <h2 class="tab-title"><i class="fas fa-receipt"></i> Boletos Emitidos</h2>
+                <button class="btn-action btn-orange" onclick="abrirModalBoleto()"><i class="fas fa-plus"></i> Gerar Novo Boleto</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nosso Número</th>
+                            <th>Cliente</th>
+                            <th>Mês Referência</th>
+                            <th>Vencimento</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaBoletos">
+                        <tr><td colspan="7" style="text-align: center;">Carregando boletos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ABA 3: USUÁRIOS ADMIN -->
+        <section id="tabAdmin" class="tab-content">
+            <div class="tab-header">
+                <h2 class="tab-title"><i class="fas fa-user-gear"></i> Administração do Sistema & Operadores</h2>
+                <button class="btn-action" onclick="abrirModalUsuario()"><i class="fas fa-user-plus"></i> Cadastrar Novo Usuário Admin</button>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                Gerencie quem pode acessar este painel e quais os níveis de permissão atribuídos a cada CPF cadastrado.
+            </p>
+
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Tipo de Acesso</th>
+                            <th>E-mail</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaUsuariosAdmin">
+                        <tr><td colspan="6" style="text-align: center;">Carregando usuários...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL CONTRATO -->
+    <div id="modalContrato" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModalContrato()">&times;</span>
+            <h3 style="color: var(--purple-main); margin-bottom: 20px; font-family: 'Poppins', sans-serif;" id="modalTitulo">Novo Contrato</h3>
+            
+            <form id="formContrato" onsubmit="salvarContrato(event)">
+                <input type="hidden" id="contratoId">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="nome" class="input-control" required placeholder="Ex: João Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" id="cpf" class="input-control" required placeholder="000.000.000-00" maxlength="14">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" id="dataNascimento" class="input-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Nome da Mãe</label>
+                        <input type="text" id="nomeMae" class="input-control" placeholder="Nome completo da mãe">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="text" id="telefone" class="input-control" placeholder="(61) 99999-9999" maxlength="15">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" id="emailCliente" class="input-control" placeholder="cliente@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>CEP</label>
+                        <input type="text" id="cep" class="input-control" placeholder="00000-000">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Endereço Completo</label>
+                        <input type="text" id="endereco" class="input-control" placeholder="Rua, Número, Bairro, Cidade">
+                    </div>
+                    <div class="form-group">
+                        <label>Plano Contratado</label>
+                        <select id="plano" class="input-control" onchange="atualizarValorPlano()">
+                            <option value="400 Mega Fibra" data-valor="79.90">400 Mega Fibra - R$ 79,90</option>
+                            <option value="700 Mega Fibra" data-valor="99.90" selected>700 Mega Fibra - R$ 99,90</option>
+                            <option value="1000 Mega Ultra" data-valor="139.90">1000 Mega Ultra - R$ 139,90</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Valor Mensal (R$)</label>
+                        <input type="text" id="valor" class="input-control" required placeholder="99.90">
+                    </div>
+                    <div class="form-group">
+                        <label>Dia do Vencimento</label>
+                        <select id="diaVencimento" class="input-control">
+                            <option value="5">Dia 05</option>
+                            <option value="10" selected>Dia 10</option>
+                            <option value="15">Dia 15</option>
+                            <option value="20">Dia 20</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status do Contrato</label>
+                        <select id="status" class="input-control">
+                            <option value="ativo">Ativo</option>
+                            <option value="finalizado">Finalizado</option>
+                            <option value="interrompido">Interrompido</option>
+                            <option value="suspenso">Suspenso</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnSalvarContrato" class="btn-action" style="width: 100%; margin-top: 25px; justify-content: center;">
+                    <i class="fas fa-save"></i> Salvar Contrato
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL NOVO BOLETO -->
+    <div id="modalBoleto" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModalBoleto()">&times;</span>
+            <h3 style="color: var(--purple-main); margin-bottom: 20px; font-family: 'Poppins', sans-serif;">Gerar Novo Boleto</h3>
+
+            <form id="formBoleto" onsubmit="salvarNovoBoleto(event)">
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Selecionar Cliente</label>
+                        <select id="bolClienteSelect" class="input-control" onchange="selecionarClienteBoleto()" required>
+                            <option value="">Carregando lista de clientes...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>CPF do Cliente</label>
+                        <input type="text" id="bolCpf" class="input-control" required placeholder="000.000.000-00" maxlength="14" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Mês de Referência</label>
+                        <select id="bolMes" class="input-control" required>
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto" selected>Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Valor (R$)</label>
+                        <input type="text" id="bolValor" class="input-control" required placeholder="99.90">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Data de Vencimento</label>
+                        <input type="date" id="bolVencimento" class="input-control" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-action btn-orange" style="width: 100%; margin-top: 25px; justify-content: center;">
+                    <i class="fas fa-barcode"></i> Gerar Boleto
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL USUÁRIO ADMIN -->
+    <div id="modalUsuario" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModalUsuario()">&times;</span>
+            <h3 style="color: var(--purple-main); margin-bottom: 20px; font-family: 'Poppins', sans-serif;" id="modalUsuarioTitulo">Cadastrar Usuário Admin</h3>
+            
+            <form id="formUsuarioAdmin" onsubmit="salvarUsuarioAdmin(event)">
+                <input type="hidden" id="usrId">
+
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Nome do Operador / Administrador</label>
+                        <input type="text" id="usrNome" class="input-control" required placeholder="Ex: Maria Oliveira">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" id="usrDataNascimento" class="input-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail (Recuperação de Senha)</label>
+                        <input type="email" id="usrEmail" class="input-control" required placeholder="email@exemplo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>CPF (Acesso)</label>
+                        <input type="text" id="usrCpf" class="input-control" required placeholder="000.000.000-00" maxlength="14">
+                    </div>
+                    <div class="form-group">
+                        <label>Senha de Acesso</label>
+                        <input type="password" id="usrSenha" class="input-control" required placeholder="Digite a senha">
+                    </div>
+                    <div class="form-group">
+                        <label>Nível de Acesso (Tipo)</label>
+                        <select id="usrTipo" class="input-control">
+                            <option value="admin">Administrador (Total)</option>
+                            <option value="operador">Operador (Suporte)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-action btn-orange" style="width: 100%; margin-top: 25px; justify-content: center;">
+                    <i class="fas fa-user-check"></i> Salvar Usuário Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script com a Lógica JS -->
+    <script src="admin.js"></script>
+</body>
+</html>

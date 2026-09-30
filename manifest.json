@@ -1,0 +1,22 @@
+{
+  "short_name": "Ky WIFI",
+  "name": "Ky WIFI Telecom - Internet Fibra",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/Xrz7n7dX/image-9658f0-removebg-preview.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.ibb.co/Xrz7n7dX/image-9658f0-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0a0f24",
+  "theme_color": "#00d2ff",
+  "display": "standalone",
+  "orientation": "portrait"
+}

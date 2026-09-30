@@ -1,0 +1,51 @@
+{
+  "usuarios": {
+    "11122233344": {
+      "cpf": "11122233344",
+      "nome": "Administrador Geral",
+      "senha": "admin123password",
+      "tipo": "admin",
+      "status": "ativo",
+      "data_nascimento": "1990-01-01",
+      "email": "admin@kywifi.com.br",
+      "created_at": "2026-08-11T19:00:00.000Z"
+    }
+  },
+  "clientes": {
+    "11122233344": {
+      "cpf": "11122233344",
+      "nome": "João da Silva",
+      "telefone": "(61) 98203-1828",
+      "cep": "72910-000",
+      "endereco": "Quadra 10, Lote 15, Águas Lindas de Goiás - GO",
+      "data_nascimento": "1985-05-15",
+      "email": "joao.silva@email.com",
+      "created_at": "2026-08-11T19:00:00.000Z"
+    }
+  },
+  "contratos": {
+    "-O123456789abc": {
+      "id": "-O123456789abc",
+      "cliente_cpf": "11122233344",
+      "cliente_nome": "João da Silva",
+      "plano": "700 Mega Fibra",
+      "valor": 99.90,
+      "dia_vencimento": 10,
+      "status": "ativo",
+      "created_at": "2026-08-11T19:00:00.000Z"
+    }
+  },
+  "boletos": {
+    "-O987654321xyz": {
+      "id": "-O987654321xyz",
+      "cliente_cpf": "11122233344",
+      "cliente_nome": "João da Silva",
+      "nosso_numero": "7564033301",
+      "mes_referencia": "Agosto",
+      "vencimento": "2026-08-10",
+      "valor": 99.90,
+      "status": "pendente",
+      "created_at": "2026-08-01T10:00:00.000Z"
+    }
+  }
+}

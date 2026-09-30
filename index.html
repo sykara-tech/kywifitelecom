@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ky WIFI Telecom - A Melhor Conexão de Fibra Óptica de Goiás. Planos com instalação grátis e roteador Wi-Fi 6.">
+    <title>Ky WIFI Telecom | A Melhor Conexão de Goiás</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- SDKs do Firebase v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+      // Configuração e inicialização do Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyA0XjvmilmpNwBVDHuVRdyF8YCQ0SimvJA",
+        authDomain: "ky-wi-fi-telecom.firebaseapp.com",
+        databaseURL: "https://ky-wi-fi-telecom-default-rtdb.firebaseio.com",
+        projectId: "ky-wi-fi-telecom",
+        storageBucket: "ky-wi-fi-telecom.appspot.com",
+        messagingSenderId: "222931880150",
+        appId: "1:222931880150:web:4224128a5b03022e3f6177",
+        measurementId: "G-RYJLD3M3HY"
+      };
+
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+    </script>
+
+    <!-- ESTILOS ADICIONAIS PARA BARRA DE ANÚNCIO E FAQ -->
+    <style>
+        /* Barra de Anúncio / Promocional (Topo) */
+        .announcement-bar {
+            background: linear-gradient(90deg, #6b21a8, #a855f7);
+            color: #ffffff;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+            position: relative;
+            z-index: 1001;
+            font-family: 'Inter', sans-serif;
+        }
+        .announcement-bar strong {
+            color: #facc15;
+        }
+        .announcement-btn {
+            background-color: #ec4899;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .announcement-btn:hover {
+            background-color: #db2777;
+            transform: scale(1.05);
+        }
+        .announcement-close {
+            position: absolute;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .announcement-close:hover {
+            opacity: 1;
+        }
+
+        /* Seção FAQ */
+        .faq-section {
+            padding: 60px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .faq-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+        .faq-item[open] {
+            border-color: #6a1b9a;
+            box-shadow: 0 6px 18px rgba(106, 27, 154, 0.12);
+        }
+        .faq-item summary {
+            font-weight: 600;
+            font-size: 1.05rem;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #1e293b;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.9rem;
+            color: #6a1b9a;
+            transition: transform 0.3s;
+        }
+        .faq-item[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .faq-item p {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <!-- CABEÇALHO -->
+    <header>
+        <a href="index.html" class="logo-area" aria-label="Início Ky WI-FI">
+            <img src="https://i.ibb.co/Xrz7n7dX/image-9658f0-removebg-preview.png" alt="Ky WIFI Telecom Logo" class="ky-logo">
+        </a>
+
+        <nav aria-label="Navegação Principal">
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#planos" onclick="closeMenu()">Planos</a></li>
+                <li><a href="#sobre" onclick="closeMenu()">Sobre Nós</a></li>
+                <li><a href="#depoimentos" onclick="closeMenu()">Avaliações</a></li>
+                <li><a href="#faq" onclick="closeMenu()">FAQ</a></li>
+                <li>
+                    <a href="https://fast.com" target="_blank" rel="noopener noreferrer" class="btn-speedtest" onclick="closeMenu()">
+                        Testar Velocidade
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/kywifitelecom" target="_blank" rel="noopener noreferrer" onclick="closeMenu()">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                        <span>Instagram</span>
+                    </a>
+                </li>
+                <li class="mobile-only">
+                    <a href="suporte.html" class="btn-client" onclick="closeMenu()">Área do Cliente</a>
+                </li>
+            </ul>
+        </nav>
+
+        <a href="suporte.html" class="btn-client desktop-only-btn">Área do Cliente</a>
+
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Abrir Menu de Navegação" aria-expanded="false" aria-controls="navMenu">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="fiber-container" aria-hidden="true">
+            <div class="fiber-line"></div>
+            <div class="fiber-line"></div>
+            <div class="fiber-line"></div>
+            <div class="fiber-line"></div>
+            <div class="fiber-line"></div>
+        </div>
+
+        <div class="hero-content reveal">
+            <h1>Simplesmente, <span>voe!</span></h1>
+            <p>Conexão de fibra óptica de verdade com velocidade e estabilidade para você e toda a sua família.</p>
+            <a href="#planos" class="btn-primary">Ver Planos Agora</a>
+        </div>
+    </section>
+
+    <!-- BENEFÍCIOS -->
+    <section class="benefits reveal" aria-label="Destaques e Benefícios">
+        <div class="benefit-item"><i class="fas fa-tools" aria-hidden="true"></i> Instalação Grátis</div>
+        <div class="benefit-item"><i class="fas fa-wifi" aria-hidden="true"></i> Roteador Wi-Fi 6</div>
+        <div class="benefit-item"><i class="fas fa-headset" aria-hidden="true"></i> Suporte 24h</div>
+        <div class="benefit-item"><i class="fas fa-shield-alt" aria-hidden="true"></i> Sem Quedas</div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="reveal">
+        <div class="sobre-container">
+            <div class="sobre-text">
+                <h2>Nossa História: Conectando Goiás</h2>
+                <p>
+                    A Ky Telecom nasceu da paixão por conectar pessoas com a melhor tecnologia. Com anos de experiência no mercado de telecomunicações em Goiás, nossa missão é entregar não apenas internet, mas uma experiência de conexão de fibra óptica de classe mundial. Com nossa infraestrutura própria e atendimento local, somos a escolha certa para quem busca velocidade e confiabilidade em Águas Lindas e região.
+                </p>
+            </div>
+            <div class="sobre-image">
+                <img src="https://img.magnific.com/fotos-premium/mulher-negra-de-lazer-moderna-usando-fones-de-ouvido-usando-tablet-digital-com-tela-brilhante_116547-47092.jpg?semt=ais_hybrid&w=740&q=80" alt="Atendente sorridente da Ky WIFI Telecom utilizando tablet digital">
+            </div>
+        </div>
+    </section>
+
+    <!-- PLANOS -->
+    <section id="planos">
+        <div class="section-title reveal">
+            <h2>Escolha seu Plano</h2>
+            <p>Mais de 10.000 clientes satisfeitos em Goiás</p>
+        </div>
+        <div class="plans-container reveal" id="plans-container"></div>
+    </section>
+
+    <!-- DEPOIMENTOS E AVALIAÇÕES -->
+    <section id="depoimentos" class="testimonials-section reveal" aria-label="Depoimentos e Avaliações">
+        <div class="section-title">
+            <h2>O que nossos clientes dizem</h2>
+            <p>Veja as avaliações de quem já usa a Ky WIFI Telecom</p>
+        </div>
+
+        <div class="testimonials-container"></div>
+
+        <div class="feedback-form-container">
+            <h3>Deixe sua Avaliação</h3>
+            <p class="subtitle">Sua opinião é fundamental para evoluirmos continuamente!</p>
+
+            <form id="feedbackForm" onsubmit="salvarFeedback(event)">
+                <div class="star-rating-input" id="starRatingInput" title="Selecione sua nota">
+                    <span class="star-btn active" data-value="1" onclick="definirNota(1)">★</span>
+                    <span class="star-btn active" data-value="2" onclick="definirNota(2)">★</span>
+                    <span class="star-btn active" data-value="3" onclick="definirNota(3)">★</span>
+                    <span class="star-btn active" data-value="4" onclick="definirNota(4)">★</span>
+                    <span class="star-btn active" data-value="5" onclick="definirNota(5)">★</span>
+                </div>
+                <input type="hidden" id="feedbackNota" value="5">
+
+                <div class="feedback-inputs">
+                    <div class="input-group">
+                        <label for="feedbackNome">Seu Nome Completo</label>
+                        <input type="text" id="feedbackNome" placeholder="Ex: Maria Silva" required autocomplete="name">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="feedbackTipo">Qual é o seu Plano Atual?</label>
+                        <select id="feedbackTipo" required>
+                            <option value="" disabled selected>Escolha o seu plano contratado...</option>
+                            <option value="Plano 400 MEGA - Fibra">Plano 400 MEGA (R$ 79,90/mês)</option>
+                            <option value="Plano 700 MEGA - Fibra">Plano 700 MEGA (R$ 99,90/mês)</option>
+                            <option value="Plano 1000 MEGA - Fibra">Plano 1000 MEGA (R$ 139,90/mês)</option>
+                            <option value="Cliente Corporativo / Empresa">Cliente Corporativo / Empresa</option>
+                            <option value="Outro Plano / Antigo">Outro Plano Ky Telecom</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="feedbackComentario">Seu Depoimento ou Experiência</label>
+                        <textarea id="feedbackComentario" rows="3" placeholder="Conte como tem sido sua velocidade, suporte e atendimento..." required></textarea>
+                    </div>
+
+                    <div class="feedback-actions">
+                        <button type="submit" class="btn-submit-feedback">
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i> Publicar Depoimento
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- SEÇÃO FAQ (PERGUNTAS FREQUENTES) -->
+    <section id="faq" class="faq-section reveal">
+        <div class="section-title">
+            <h2>Perguntas Frequentes (FAQ)</h2>
+            <p>Tire suas dúvidas sobre nossa conexão e serviços</p>
+        </div>
+
+        <div class="faq-container">
+            <details class="faq-item">
+                <summary>A instalação da internet é realmente gratuita?</summary>
+                <p>Sim! Todos os nossos planos residenciais contam com instalação 100% grátis realizada por técnicos especializados.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>O Roteador Wi-Fi 6 já vem incluso no plano?</summary>
+                <p>Sim, disponibilizamos roteadores de última geração Wi-Fi 6 em comodato, garantindo maior cobertura, estabilidade e suporte a dezenas de aparelhos conectados simultaneamente.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Qual o prazo para a instalação após assinar?</summary>
+                <p>Realizamos a instalação em até 24 a 48 horas úteis após a aprovação do cadastro na região de Águas Lindas e proximidades.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>A velocidade de upload é igual à de download?</summary>
+                <p>Trabalhamos com alta taxa de upload dedicada para garantir que suas videochamadas, jogos online e transmissões aconteçam sem nenhum tipo de travamento.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Como posso solicitar a 2ª via da fatura ou suporte?</summary>
+                <p>Você pode acessar a nossa <strong>Área do Cliente</strong> no menu superior ou entrar em contato diretamente via WhatsApp pelo número (61) 98203-1828.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- STREAMINGS PARCEIROS -->
+    <section class="partners reveal" aria-label="Plataformas de Streaming">
+        <h2>Streamings Inclusos</h2>
+        <div class="partners-logos">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Logo da Netflix">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Logo do Spotify">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" alt="Logo do Disney Plus">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="Logo do YouTube">
+        </div>
+    </section>
+
+    <!-- BOTÃO WHATSAPP -->
+    <a href="https://wa.me/5561982031828" target="_blank" rel="noopener noreferrer" onclick="falarComAtendente(event)" class="whatsapp-float" aria-label="Falar com atendente pelo WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+
+    <!-- RODAPÉ -->
+    <footer id="suporte">
+        <div class="footer-grid reveal">
+            <div>
+                <h4>Ky WI-FI Telecom</h4>
+                <p><i class="fas fa-file-alt" aria-hidden="true"></i> CNPJ: 22.131.209/0001-93</p>
+                <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Águas Lindas de Goiás - GO</p>
+            </div>
+            <div>
+                <h4>Contato</h4>
+                <p><i class="fab fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/5561982031828" target="_blank" rel="noopener noreferrer">(61) 98203-1828</a></p>
+                <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:kywifitelecom@gmail.com">kywifitelecom@gmail.com</a></p>
+                <p>
+                    <a href="https://www.instagram.com/kywifitelecom" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fab fa-instagram" aria-hidden="true"></i> @kywifitelecom
+                    </a>
+                </p>
+            </div>
+
+            <!-- ÁREA DO COLABORADOR -->
+            <div>
+                <h4>Acesso Interno</h4>
+                <a href="login.html" class="btn-colaborador">
+                    <i class="fas fa-user-shield" aria-hidden="true"></i> Área do Colaborador
+                </a>
+            </div>
+        </div>
+
+        <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.7;">
+            © 2026 Ky WIFI Telecom. Todos os direitos reservados. | <a href="privacidade.html" style="color: inherit;">Política de Privacidade</a>
+        </p>
+        <img src="https://i.ibb.co/Xrz7n7dX/image-9658f0-removebg-preview.png" alt="Ky WIFI Logo Rodapé" width="50" style="margin-top: 10px;">
+    </footer>
+
+    <!-- LGPD COOKIES BANNER -->
+    <div id="lgpd-banner" class="lgpd-banner" role="dialog" aria-live="polite" aria-label="Aviso de Privacidade e Cookies">
+        <div class="lgpd-content">
+            <p>
+                Utilizamos cookies para personalizar conteúdos, analisar o tráfego e melhorar sua experiência na <strong>Ky WIFI Telecom</strong>. 
+                Ao clicar em <strong>"Aceitar Todos"</strong>, você concorda com o uso de cookies de acordo com a nossa 
+                <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.
+            </p>
+            <div class="lgpd-buttons">
+                <button id="lgpd-reject" class="btn-lgpd-secondary" onclick="document.getElementById('lgpd-banner').style.display='none'">Apenas Essenciais</button>
+                <button id="lgpd-accept" class="btn-lgpd-primary" onclick="document.getElementById('lgpd-banner').style.display='none'">Aceitar Todos</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLUGIN VLIBRAS -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+
+    <!-- SCRIPTS DA APLICAÇÃO -->
+    <script src="script.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>
