@@ -136,6 +136,182 @@
             line-height: 1.6;
             color: #475569;
         }
+
+        /* ===== ASSINATURA SYKARATECH ===== */
+        .ky-footer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sykara-signature {
+            width: min(1120px, calc(100% - 40px));
+            margin: 42px auto 0;
+        }
+
+        .sykara-line {
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,.10) 18%,
+                rgba(111,211,59,.35) 50%,
+                rgba(255,255,255,.10) 82%,
+                transparent
+            );
+        }
+
+        .sykara-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 28px 0;
+        }
+
+        .sykara-logo-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 190px;
+            transition: transform .3s ease, filter .3s ease;
+        }
+
+        .sykara-logo-link:hover {
+            transform: translateY(-3px) scale(1.02);
+            filter: drop-shadow(0 8px 20px rgba(111,211,59,.16));
+        }
+
+        .sykara-logo {
+            width: 100%;
+            max-width: 190px;
+            height: auto;
+            display: block;
+        }
+
+        .sykara-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .sykara-text > span {
+            color: rgba(255,255,255,.68);
+            font-size: .88rem;
+            letter-spacing: .01em;
+        }
+
+        .sykara-text > span strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .sykara-site-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 265px;
+            padding: 11px 15px;
+            border: 1px solid rgba(111,211,59,.28);
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(111,211,59,.12), rgba(255,255,255,.045));
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,.12);
+            transition: transform .25s ease, border-color .25s ease,
+                        background .25s ease, box-shadow .25s ease;
+        }
+
+        .sykara-site-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(111,211,59,.62);
+            background: linear-gradient(135deg, rgba(111,211,59,.19), rgba(255,255,255,.07));
+            box-shadow: 0 12px 30px rgba(111,211,59,.12);
+        }
+
+        .sykara-site-icon {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: #73d33d;
+            color: #081006;
+            box-shadow: 0 5px 15px rgba(111,211,59,.20);
+        }
+
+        .sykara-site-btn small {
+            display: block;
+            margin-bottom: 2px;
+            color: rgba(255,255,255,.58);
+            font-size: .68rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .sykara-site-btn b {
+            display: block;
+            color: #fff;
+            font-size: .88rem;
+            font-weight: 600;
+        }
+
+        .sykara-arrow {
+            margin-left: auto;
+            color: #73d33d;
+            font-size: .82rem;
+            transition: transform .25s ease;
+        }
+
+        .sykara-site-btn:hover .sykara-arrow {
+            transform: translate(2px, -2px);
+        }
+
+        .footer-copy {
+            margin-top: 25px;
+            font-size: .9rem;
+            opacity: .7;
+        }
+
+        .footer-copy span {
+            margin: 0 5px;
+            opacity: .5;
+        }
+
+        .footer-copy a {
+            color: inherit;
+        }
+
+        .ky-footer-logo {
+            margin-top: 10px;
+        }
+
+        @media (max-width: 650px) {
+            .sykara-content {
+                flex-direction: column;
+                gap: 18px;
+                text-align: center;
+            }
+
+            .sykara-text {
+                align-items: center;
+            }
+
+            .sykara-site-btn {
+                min-width: 0;
+                width: min(100%, 290px);
+                box-sizing: border-box;
+                text-align: left;
+            }
+
+            .footer-copy {
+                line-height: 1.7;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -332,25 +508,29 @@
     </a>
 
     <!-- RODAPÉ -->
-    <footer id="suporte">
+    <footer id="suporte" class="ky-footer">
         <div class="footer-grid reveal">
-            <div>
+            <div class="footer-brand">
                 <h4>Ky WI-FI Telecom</h4>
                 <p><i class="fas fa-file-alt" aria-hidden="true"></i> CNPJ: 22.131.209/0001-93</p>
                 <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Águas Lindas de Goiás - GO</p>
             </div>
+
             <div>
                 <h4>Contato</h4>
-                <p><i class="fab fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/5561982031828" target="_blank" rel="noopener noreferrer">(61) 98203-1828</a></p>
-                <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:kywifitelecom@gmail.com">kywifitelecom@gmail.com</a></p>
+                <p><i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    <a href="https://wa.me/5561982031828" target="_blank" rel="noopener noreferrer">(61) 98203-1828</a>
+                </p>
+                <p><i class="fas fa-envelope" aria-hidden="true"></i>
+                    <a href="mailto:kywifitelecom@gmail.com">kywifitelecom@gmail.com</a>
+                </p>
                 <p>
-                    <a href="https://www.instagram.com/kywifitelecom" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 10px;">
+                    <a href="https://www.instagram.com/kywifitelecom" target="_blank" rel="noopener noreferrer" class="footer-social">
                         <i class="fab fa-instagram" aria-hidden="true"></i> @kywifitelecom
                     </a>
                 </p>
             </div>
 
-            <!-- ÁREA DO COLABORADOR -->
             <div>
                 <h4>Acesso Interno</h4>
                 <a href="login.html" class="btn-colaborador">
@@ -359,110 +539,43 @@
             </div>
         </div>
 
-        <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.7;">
-            © 2026 Ky WIFI Telecom. Todos os direitos reservados. | <a href="privacidade.html" style="color: inherit;">Política de Privacidade</a>
-        </p>
-        <img src="https://i.ibb.co/Xrz7n7dX/image-9658f0-removebg-preview.png" alt="Ky WIFI Logo Rodapé" width="50" style="margin-top: 10px;">
-    </footer>
-<footer class="sykara-footer">
-    <div class="sykara-footer-content">
+        <!-- Assinatura SyKaraTech -->
+        <div class="sykara-signature">
+            <div class="sykara-line"></div>
 
-        <a href="https://sykara-tech.github.io/home/" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           class="sykara-brand">
-            <img src="logo-sykara.png" alt="SyKaraTech™">
-        </a>
+            <div class="sykara-content">
+                <a href="https://sykara-tech.github.io/home/" target="_blank" rel="noopener noreferrer"
+                   class="sykara-logo-link" aria-label="Visitar o site da SyKaraTech">
+                    <img src="logo-sykara.png" alt="SyKaraTech™" class="sykara-logo">
+                </a>
 
-        <div class="sykara-info">
-            <span>Desenvolvido por <strong>SyKaraTech™</strong></span>
-            <a href="https://sykara-tech.github.io/home/" 
-               target="_blank" 
-               rel="noopener noreferrer">
-                sykara-tech.github.io/home/
-            </a>
+                <div class="sykara-text">
+                    <span>Desenvolvido por <strong>SyKaraTech™</strong></span>
+                    <a href="https://sykara-tech.github.io/home/" target="_blank" rel="noopener noreferrer"
+                       class="sykara-site-btn">
+                        <span class="sykara-site-icon"><i class="fas fa-globe" aria-hidden="true"></i></span>
+                        <span>
+                            <small>Acesse nosso site</small>
+                            <b>SyKaraTech™</b>
+                        </span>
+                        <i class="fas fa-arrow-up-right-from-square sykara-arrow" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sykara-line"></div>
         </div>
 
-    </div>
-</footer>
+        <p class="footer-copy">
+            © 2026 Ky WIFI Telecom. Todos os direitos reservados.
+            <span>|</span>
+            <a href="privacidade.html">Política de Privacidade</a>
+        </p>
 
-<style>
-    .sykara-footer {
-        width: 100%;
-        padding: 28px 20px;
-        margin-top: 40px;
-        background: #050505;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        box-sizing: border-box;
-    }
+        <img src="https://i.ibb.co/Xrz7n7dX/image-9658f0-removebg-preview.png"
+             alt="Ky WIFI Logo Rodapé" width="50" class="ky-footer-logo">
+    </footer>
 
-    .sykara-footer-content {
-        max-width: 1200px;
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 28px;
-    }
-
-    .sykara-brand {
-        display: flex;
-        align-items: center;
-        transition: transform 0.25s ease;
-    }
-
-    .sykara-brand:hover {
-        transform: translateY(-2px);
-    }
-
-    .sykara-brand img {
-        width: 180px;
-        height: auto;
-        display: block;
-    }
-
-    .sykara-info {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        font-family: Arial, sans-serif;
-        color: #bdbdbd;
-        font-size: 14px;
-    }
-
-    .sykara-info strong {
-        color: #ffffff;
-        font-weight: 600;
-    }
-
-    .sykara-info a {
-        color: #72d33b;
-        text-decoration: none;
-        font-size: 13px;
-        transition: opacity 0.2s ease;
-    }
-
-    .sykara-info a:hover {
-        opacity: 0.75;
-        text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-        .sykara-footer-content {
-            flex-direction: column;
-            text-align: center;
-            gap: 15px;
-        }
-
-        .sykara-brand img {
-            width: 160px;
-        }
-
-        .sykara-info {
-            align-items: center;
-        }
-    }
-</style>
     <!-- LGPD COOKIES BANNER -->
     <div id="lgpd-banner" class="lgpd-banner" role="dialog" aria-live="polite" aria-label="Aviso de Privacidade e Cookies">
         <div class="lgpd-content">
